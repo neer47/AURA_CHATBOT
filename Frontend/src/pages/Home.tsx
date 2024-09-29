@@ -24,7 +24,7 @@ const Home = () => {
           <img
             src="chat.png"
             alt="chatbot"
-            className="flex mx-auto w-[80%] md:w-[60%] rounded-2xl shadow-[0_-5px_105px_#64f3d5] my-5 p-2"
+            className="flex mx-auto w-[80%] md:w-[60%] rounded-2xl shadow-[0_-5px_105px_#64f3d5] my-10 p-2"
           />
         </div>
       </div>
