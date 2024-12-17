@@ -17,144 +17,127 @@ type Message = {
 
 const Chat = () => {
   const navigate = useNavigate();
-  const auth = useAuth(); // Get the user authentication status from AuthContext
+  const auth = useAuth();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [chatMessages, setChatMessages] = useState<Message[]>([]); // Manage chat messages state
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const [chatMessages, setChatMessages] = useState<Message[]>([]);
 
-// Fetch user chats when the component is mounted and user is logged in
-useEffect(() => {
-  const fetchChats = async () => {
-    if (auth?.isLoggedIn && auth.user) {
-      try {
-        toast.loading("Loading Chats", { id: "loadchats" });
-
-        // Make an API call to get user chats
-        const data = await getUserChats();
-
-        // Update chat messages state
-        setChatMessages([...data.chats]);
-
-        toast.success("Successfully loaded chats", { id: "loadchats" });
-      } catch (error) {
-        console.error("Failed to load chats:", error);
-
-        // Display error toast message
-        toast.error("Loading Failed", { id: "loadchats" });
+  // Fetch chats on mount
+  useEffect(() => {
+    const fetchChats = async () => {
+      if (auth?.isLoggedIn && auth.user) {
+        try {
+          toast.loading("Loading Chats", { id: "loadchats" });
+          const data = await getUserChats();
+          setChatMessages([...data.chats]);
+          toast.success("Chats loaded successfully", { id: "loadchats" });
+        } catch (error) {
+          console.error("Failed to load chats:", error);
+          toast.error("Failed to load chats", { id: "loadchats" });
+        }
       }
-    }
-  };
+    };
+    fetchChats();
+  }, [auth]);
 
-  fetchChats(); // Call the async function
+  // Scroll to bottom when chatMessages update
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
 
-}, [auth]);
-
-
-  // Redirect to login page if user is not logged in
+  // Redirect to login if not authenticated
   useEffect(() => {
     if (!auth?.user) {
       navigate("/login");
     }
   }, [auth, navigate]);
 
-  // Function to handle chat submission when user presses "Enter" or clicks the submit button
+  // Handle sending chat messages
   const handleSubmit = async () => {
-    const content = inputRef.current?.value.trim(); // Get the trimmed input value
-
-    // Check if input is valid
+    const content = inputRef.current?.value.trim();
     if (!content) {
       toast.error("Message cannot be empty!");
       return;
     }
 
-    // Clear the input field
-    if (inputRef && inputRef.current) {
-      inputRef.current.value = "";
-    }
-
-    // Add the new message to the chat
+    if (inputRef.current) inputRef.current.value = "";
     const newMessage: Message = { role: "user", content };
     setChatMessages((prev) => [...prev, newMessage]);
 
     try {
-      // Send the user's message to the server
       const chatData = await sendChatRequest(content);
-
-      // Update the chat with the response from the server
       setChatMessages([...chatData.chats]);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Failed to send message");
     }
   };
 
-  // Function to handle chat deletion
+  // Handle chat deletion
   const handleDeleteChats = async () => {
     try {
-      toast.loading("Deleting Chats", { id: "deletechats" });
-      await deleteUserChats(); // Call the delete chat API
-      setChatMessages([]); // Clear chat messages
-      toast.success("Deleted Chats Successfully", { id: "deletechats" });
+      toast.loading("Deleting chats...", { id: "deletechats" });
+      await deleteUserChats();
+      setChatMessages([]);
+      toast.success("Chats deleted successfully", { id: "deletechats" });
     } catch (error) {
-      console.log(error);
-      toast.error("Deleting chats failed", { id: "deletechats" });
+      console.error(error);
+      toast.error("Failed to delete chats", { id: "deletechats" });
     }
   };
 
   return (
-    <div className="flex flex-1 w-full h-full mt-3 gap-3">
+    <div className="flex h-[90vh] bg-gray-900 text-white">
       {/* Sidebar */}
-      <div className="hidden md:flex flex-[0.2] flex-col w-full h-[60vh] bg-gray-800 rounded-lg mx-3">
-        {/* User's initial */}
-        <div className="bg-white text-black font-bold mx-auto my-2 rounded-full h-14 w-14 flex items-center justify-center">
-          {/* Display the user's initials */}
-          {auth?.user?.name.split(" ")[0][0].toUpperCase()}
-          {auth?.user?.name.split(" ")[1][0].toUpperCase()}
+      <aside className="hidden md:flex flex-col w-64 bg-gray-800 p-6 shadow-lg">
+        <div className="flex items-center justify-center h-16 rounded-full bg-cyan-500 text-2xl font-semibold mb-4">
+          {auth?.user?.name[0].toUpperCase()}
         </div>
-        <p className="mx-auto font-sans text-white">
-          You are talking to a ChatBOT
+        <p className="text-center text-gray-300 mb-4">
+          You are talking to ChatGPT
         </p>
-        <p className="mx-auto font-sans text-white my-4 p-3 text-center">
-          You can ask some questions related to Knowledge, Business, Advice,
-          Education, etc. But avoid sharing personal information.
+        <p className="text-sm text-gray-400 mb-6 text-center">
+          Feel free to ask questions related to knowledge, advice, and education.
         </p>
         <button
           onClick={handleDeleteChats}
-          className="bg-red-300 hover:bg-red-500 text-white font-bold rounded-lg py-2 px-4 mx-auto mt-auto mb-5"
+          className="mt-auto py-2 px-4 bg-red-500 hover:bg-red-600 rounded-lg text-white"
         >
           Clear Conversation
         </button>
-      </div>
+      </aside>
 
       {/* Chat Section */}
-      <div className="flex flex-col w-full md:flex-[.8] px-3">
-        <h2 className="text-4xl text-white mb-2 mx-auto font-semibold">
+      <main className="flex-1 flex flex-col px-4">
+        <h2 className="text-2xl font-bold text-center py-4 border-b border-gray-700">
           Model - GPT-4o
         </h2>
 
-        {/* Chat messages display */}
-        <div className="w-full h-[60vh] rounded-lg mx-auto flex flex-col overflow-y-auto">
+        {/* Chat Messages */}
+        <div className="flex-1 overflow-y-auto px-2 py-4">
           {chatMessages.map((chat, index) => (
             <ChatItem content={chat.content} role={chat.role} key={index} />
           ))}
+          <div ref={messagesEndRef}></div>
         </div>
 
-        {/* Chat input section */}
-        <div className="w-full rounded-lg bg-gray-800 flex items-center">
+        {/* Input Section */}
+        <div className="flex items-center bg-gray-800 rounded-lg p-2 shadow-md mb-4">
           <input
             ref={inputRef}
             type="text"
-            className="w-full bg-transparent py-4 px-6 border-none outline-none text-white text-lg"
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSubmit(); // Trigger handleSubmit when Enter is pressed
-              }
-            }}
+            placeholder="Type your message..."
+            className="flex-1 bg-transparent text-white placeholder-gray-400 px-4 py-2 outline-none"
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           />
-          <button onClick={handleSubmit} className="text-white mx-2">
-            <IoMdSend />
+          <button
+            onClick={handleSubmit}
+            className="p-2 bg-cyan-600 hover:bg-cyan-700 rounded-lg"
+          >
+            <IoMdSend size={24} />
           </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

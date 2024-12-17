@@ -11,7 +11,7 @@ const Footer = () => {
         }}
       >
         <p style={{ fontSize: "30px", textAlign: "center", padding: "20px" }}>
-          Powered By Open AI
+          Powered By AURA AI
         </p>
       </div>
     </footer>
