@@ -15,7 +15,7 @@ A full-stack chatbot application built using the MERN stack (MongoDB, Express, R
 * React: For building the user interface.
 * React Router DOM: For handling navigation between routes.
 * Context API: For managing global application state (authentication and chat state).
-* Tailwind CSS / Material UI: For styling and responsive design.
+* Tailwind CSS: For styling and responsive design.
 
 ### Backend:
 * Node.js & Express: For creating the backend API and handling requests.
