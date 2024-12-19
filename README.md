@@ -1,4 +1,4 @@
-# MERN Stack Chatbot
+# AURA Chatbot
 
 A full-stack chatbot application built using the MERN stack (MongoDB, Express, React, Node.js) that integrates with the OpenAI API for chat completion. This project features user authentication, a dynamic chat interface, and state management via the Context API.
 
@@ -16,6 +16,7 @@ A full-stack chatbot application built using the MERN stack (MongoDB, Express, R
 * React Router DOM: For handling navigation between routes.
 * Context API: For managing global application state (authentication and chat state).
 * Tailwind CSS: For styling and responsive design.
+* TypeScript: For static typing, helping catch errors early and improve code quality.
 
 ### Backend:
 * Node.js & Express: For creating the backend API and handling requests.
