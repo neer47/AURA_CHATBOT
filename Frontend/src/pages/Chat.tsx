@@ -92,9 +92,10 @@ const Chat = () => {
       <aside className="hidden md:flex flex-col w-64 bg-gray-800 p-6 shadow-lg">
         <div className="flex items-center justify-center h-16 rounded-full bg-cyan-500 text-2xl font-semibold mb-4">
           {auth?.user?.name[0].toUpperCase()}
+          {auth?.user?.name[1].toUpperCase()}
         </div>
         <p className="text-center text-gray-300 mb-4">
-          You are talking to ChatGPT
+          You are talking to AuraGPT
         </p>
         <p className="text-sm text-gray-400 mb-6 text-center">
           Feel free to ask questions related to knowledge, advice, and education.

@@ -13,7 +13,7 @@ const Logo = () => {
         />
       </Link>
       <div className="hidden md:block font-extrabold text-white" style={{ textShadow: "2px 2px 20px #000" }}>
-        <span className="text-2xl">MERN</span>-GPT
+        <span className="text-2xl">AURA</span>-GPT
       </div>
     </div>
   );
