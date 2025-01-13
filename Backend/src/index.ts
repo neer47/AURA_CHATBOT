@@ -5,6 +5,7 @@ import morgan from "morgan";
 import appRouter from './routes/index.js'
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import path from "path";
 config();
 const app = express();
 
@@ -18,6 +19,14 @@ app.use(morgan("dev"));
 connect();
 
 app.use("/api/v1", appRouter);  
+
+// Serve the compiled bundle from the dist directory
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// Serve the index.html file for any unknown routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+});
 
 const PORT = process.env.PORT || 5000;
 

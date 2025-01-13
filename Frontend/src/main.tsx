@@ -1,11 +1,12 @@
+import React from 'react';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import App from './App.tsx'
+import App from './App'
 import './index.css'
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from 'react-hot-toast';
 import axios from 'axios'
-import { AuthProvider } from "./context/AuthContext.tsx";
+import { AuthProvider } from "./context/AuthContext";
 axios.defaults.baseURL = "http://localhost:5000/api/v1";
 axios.defaults.withCredentials = true;
 

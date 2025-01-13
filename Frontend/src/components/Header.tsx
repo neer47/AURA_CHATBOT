@@ -1,3 +1,4 @@
+import React from 'react';
 import Logo from "./shared/Logo";
 import {useAuth} from "../context/AuthContext";
 import NavigationLink from "./shared/NavigationLink";

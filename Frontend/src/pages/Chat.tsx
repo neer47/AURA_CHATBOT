@@ -1,3 +1,4 @@
+import React from 'react';
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { IoMdSend } from "react-icons/io";

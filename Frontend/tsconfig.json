@@ -1,7 +1,16 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "compilerOptions": {
+    "target": "es2018", // Target JavaScript version
+    "module": "esnext", // Module system
+    "jsx": "react", // Enable JSX support for React
+    "strict": true, // Enable strict type-checking
+    "esModuleInterop": true, // Enable ES module interop
+    "skipLibCheck": true, // Skip library checks
+    "forceConsistentCasingInFileNames": true, // Ensure consistent file naming
+    "moduleResolution": "node", // Use Node.js-style module resolution
+    "resolveJsonModule": true, // Allow importing JSON files
+    "isolatedModules": true, // Ensure each file is treated as a separate module
+    "noEmit": false // Do not emit JavaScript files (only type-check)
+  },
+  "include": ["src/**/*"] // Include all files in the src directory
 }

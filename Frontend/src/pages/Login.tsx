@@ -1,3 +1,4 @@
+import React from 'react';
 import { IoIosLogIn } from "react-icons/io";
 import CustomizedInput from "../components/shared/CustomizedInput";
 import toast from "react-hot-toast";

@@ -1,3 +1,4 @@
+import React from 'react';
 import TypingAnim from "../components/typer/TypingAnim";
 import Footer from "../components/footer/Footer";
 import { useNavigate } from "react-router-dom";
